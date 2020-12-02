@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-bool isPasswordValid(std::string inputString)
+bool isPasswordValid_Puzzle1(std::string inputString)
 {   
     int occurences = 0;
     int atLeast = 0;
@@ -64,6 +64,55 @@ bool isPasswordValid(std::string inputString)
 }
 
 
+bool isPasswordValid_Puzzle2(std::string inputString)
+{   
+    int occurences = 0;
+    int position1 = 0;
+    int position2 = 0;
+    char relevantChar = '0';
+    std::string password = "";
+    std::string tempString = "";
+    std::string rangeString = "";
+    std::size_t tempIndex = 0;
+
+    //First, get the first segment of line with position1-position2:
+    tempIndex = inputString.find(" ");
+    rangeString = inputString.substr(0, tempIndex); // get first and second numbers (position1 and position2)
+    inputString = inputString.substr(tempIndex+1);
+    //std::cout << "Tempstring for position1 and position2: " << rangeString << std::endl;
+    
+    //Then, get the second segment of line with the relevant Char:
+    tempIndex = inputString.find(" ");
+    tempString = inputString.substr(0, tempIndex); // get charactere (relevantChar)
+    relevantChar = tempString[0];
+    
+    //std::cout << "Tempstring for relevantChar: " << tempString << std::endl;
+    //Then, get the password substring
+    password = inputString.substr(tempIndex+1); // get password 
+    std::cout << "Tempstring for password: " << password << std::endl;
+
+    //Now, convert the rangeString to two integers and save it to position1 and position2
+    tempString = rangeString.substr(0, rangeString.find("-")); // get position1 inside rangeString
+    //std::cout << "Tempstring for position1: " << tempString << std::endl;
+    position1 = std::stoi (tempString);
+    tempIndex = rangeString.find("-")+1;
+
+    tempString = rangeString.substr(tempIndex); // get position1
+    //std::cout << "Tempstring for position1: " << tempString << std::endl;
+    position2 = std::stoi (tempString);
+
+    //decrease positions so that it corresponds to cpp indexes
+    position1--;
+    position2--;
+    if(password[position1] == relevantChar) occurences++; 
+    if(password[position2] == relevantChar) occurences++;
+    if(occurences == 1) return true;
+    else return false;
+
+
+}
+
+
 int main()
 {
     std::ifstream entries;
@@ -77,7 +126,7 @@ int main()
         while ( std::getline(entries, tempString) )
         {
         //std::cout << tempString << '\n';
-        if(isPasswordValid(tempString))
+        if(isPasswordValid_Puzzle2(tempString))
         {
             numberOfValidPasswords++;
         }
