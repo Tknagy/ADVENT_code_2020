@@ -62,4 +62,5 @@ int main()
         solutionFirstStep(bigger_value_it, data_vector);       
         //solutionSecondStep(bigger_value_it, data_vector);
     }  
+    return 0;
 }
