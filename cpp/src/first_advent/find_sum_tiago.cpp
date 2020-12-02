@@ -5,6 +5,38 @@
 #include <algorithm> 
 using namespace std;
 
+void solutionFirstStep(std::vector<int>::iterator bigger_value_it, const vector<int> & data_vector)
+{
+    for (const auto &smaller_value : data_vector)
+    {        
+        const int sum = smaller_value + *bigger_value_it;
+        if(sum > 2020) break;
+        if(sum == 2020)
+        {
+        std::cout<< "The solution is: " << smaller_value * *bigger_value_it << endl;
+        }
+    }
+}
+
+void solutionSecondStep(std::vector<int>::iterator bigger_value_it, const vector<int> & data_vector)
+{
+    for (auto smaller_value_it = data_vector.begin(); smaller_value_it != data_vector.end(); ++smaller_value_it)
+        {        
+            int sum = *smaller_value_it + *bigger_value_it;
+            if(sum > 2020) break;
+
+            auto next_smaller_value_it = smaller_value_it;
+            while(sum < 2020)
+            {
+                sum = *smaller_value_it + *bigger_value_it + *(++next_smaller_value_it);
+                if(sum == 2020)
+                {
+                    std::cout<< "The solution is: " << *smaller_value_it * *bigger_value_it * *next_smaller_value_it << endl;
+                }
+            }
+        }
+}
+
 int main()
 {
     string line;
@@ -25,18 +57,9 @@ int main()
 
     sort(data_vector.begin(), data_vector.end());
 
-    for (auto bigger_value_it = data_vector.end(); bigger_value_it != data_vector.begin(); --bigger_value_it)
+    for (auto bigger_value_it = data_vector.end() - 1; bigger_value_it != data_vector.begin(); --bigger_value_it)
     {
-        for (const auto &smaller_value : data_vector)
-        {        
-            const int sum = smaller_value + *bigger_value_it;
-            if(sum > 2020) break;
-            if(sum == 2020)
-            {
-                std::cout<< "The solution is: " << smaller_value * *bigger_value_it << endl;
-            }
-        }
-        
-    }
-    
+        solutionFirstStep(bigger_value_it, data_vector);       
+        //solutionSecondStep(bigger_value_it, data_vector);
+    }  
 }
