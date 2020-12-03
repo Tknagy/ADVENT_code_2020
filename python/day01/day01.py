@@ -11,7 +11,7 @@ with open('ex1input.csv', newline='') as csvfile:
         # print(', '.join(row))
         numbersArray.append(int(', '.join(row)))
 
-print('======== Part 1========')
+print('======== Part 1 ========')
 # going through all the numbers and checking which one sums up 2020
 for num1 in numbersArray:
     for num2 in numbersArray:
@@ -26,7 +26,7 @@ start = time.time()
 # Now doing the part 2, for 3 numbers
 print()
 print()
-print('======== Part 2========')
+print('======== Part 2 ========')
 # going through all the numbers and checking which one sums up 2020
 for num1 in numbersArray:
     for num2 in numbersArray:
