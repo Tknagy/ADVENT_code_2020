@@ -1,9 +1,9 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <vector>
 #include <algorithm>
+#include <iostream>
 #include <regex>
+#include <sstream>
+#include <string>
+#include <vector>
 
 static std::vector<std::string> read_stdin()
 {
@@ -19,12 +19,9 @@ static std::vector<std::string> read_stdin()
 
 bool part_one(const std::string &line)
 {
-    if (line.find("byr") != std::string::npos &&
-        line.find("iyr") != std::string::npos &&
-        line.find("eyr") != std::string::npos &&
-        line.find("hgt") != std::string::npos &&
-        line.find("hcl") != std::string::npos &&
-        line.find("ecl") != std::string::npos &&
+    if (line.find("byr") != std::string::npos && line.find("iyr") != std::string::npos &&
+        line.find("eyr") != std::string::npos && line.find("hgt") != std::string::npos &&
+        line.find("hcl") != std::string::npos && line.find("ecl") != std::string::npos &&
         line.find("pid") != std::string::npos)
         return true;
     else
@@ -65,17 +62,12 @@ bool validate_hgt(const std::string &hgt)
     std::stringstream tmp(hgt);
     tmp >> height >> units;
 
-    if (units == "cm" &&
-        150 <= height &&
-        193 >= height)
+    if (units == "cm" && 150 <= height && 193 >= height)
         return true;
-    else if (units == "in" &&
-        59 <= height &&
-        76 >= height)
+    else if (units == "in" && 59 <= height && 76 >= height)
         return true;
     else
         return false;
-    
 }
 
 bool validate_hcl(const std::string &hcl)
@@ -105,7 +97,8 @@ bool validate_pid(const std::string &pid)
         return false;
 }
 
-bool validate_field(const std::string &field, const std::string &line, bool (*validate_function)(const std::string &val))
+bool validate_field(const std::string &field, const std::string &line,
+                    bool (*validate_function)(const std::string &val))
 {
     size_t init;
     init = line.find(field);
@@ -118,7 +111,6 @@ bool validate_field(const std::string &field, const std::string &line, bool (*va
         return false;
     return true;
 }
-
 
 bool part_two(const std::string &line)
 {

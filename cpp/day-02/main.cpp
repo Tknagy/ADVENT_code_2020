@@ -1,11 +1,11 @@
 #include <algorithm>
-#include <iostream>
-#include <fstream>
 #include <cstdint>
 #include <cstdio>
+#include <fstream>
+#include <iostream>
 #include <string>
-#include <vector>
 #include <tuple>
+#include <vector>
 
 static std::vector<std::string> read_stdin()
 {
@@ -21,7 +21,7 @@ std::tuple<std::uint32_t, std::uint32_t, char, std::string> parse_information(co
     int first, second;
     char letter;
     sscanf(line.c_str(), "%d-%d %c:", &first, &second, &letter);
-    std::string password(line.substr(line.find(":")+2));
+    std::string password(line.substr(line.find(":") + 2));
 
     return std::make_tuple(first, second, letter, password);
 }
@@ -36,7 +36,7 @@ static bool part_one(const std::string &line)
 static bool part_two(const std::string &line)
 {
     auto [first, second, letter, pwd] = parse_information(line);
-    return ((pwd[first-1] == letter) != (pwd[second-1] == letter)) ? true : false;
+    return ((pwd[first - 1] == letter) != (pwd[second - 1] == letter)) ? true : false;
 }
 
 int main(int argc, char const *argv[])

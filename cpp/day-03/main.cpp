@@ -19,7 +19,7 @@ unsigned long int part_one(const std::vector<std::string> &map, int slope_x = 3,
     while (!finished) {
         if (map[y][x] == '#')
             cnt++;
-        
+
         x = (x + slope_x) % width;
         y = (y + slope_y);
         if (y > height)
@@ -30,11 +30,7 @@ unsigned long int part_one(const std::vector<std::string> &map, int slope_x = 3,
 
 unsigned long int part_two(const std::vector<std::string> &map)
 {
-    return part_one(map, 1, 1) *
-        part_one(map, 3, 1) *
-        part_one(map, 5, 1) *
-        part_one(map, 7, 1) *
-        part_one(map, 1, 2);
+    return part_one(map, 1, 1) * part_one(map, 3, 1) * part_one(map, 5, 1) * part_one(map, 7, 1) * part_one(map, 1, 2);
 }
 
 int main(int argc, char const *argv[])
