@@ -86,7 +86,7 @@ uint8_t validatePassport_Puzzle2(std::string passportLine)
         byrDec = std::stoi(byr);
     }
     catch (const std::invalid_argument& ia) {
-        std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
+        //std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
         return 0;
     }
     if(byrDec < 1920 || byrDec > 2002) return 0;
@@ -97,7 +97,7 @@ uint8_t validatePassport_Puzzle2(std::string passportLine)
         iyrDec = std::stoi(iyr);
     }
     catch (const std::invalid_argument& ia) {
-        std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
+        //std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
         return 0;
     }
     if(iyrDec < 2010 || iyrDec > 2020) return 0;
@@ -106,10 +106,9 @@ uint8_t validatePassport_Puzzle2(std::string passportLine)
     int eyrDec;
     try {
         eyrDec = std::stoi(eyr);
-        std::cout << "eyrDec:" << eyrDec << std::endl;
     }
     catch (const std::invalid_argument& ia) {
-        std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
+        //std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
         return 0;
     }
     
@@ -137,7 +136,7 @@ uint8_t validatePassport_Puzzle2(std::string passportLine)
            int hclHex = std::stoi(hcl,nullptr,16);
         }
         catch (const std::invalid_argument& ia) {
-            std::cerr << "Invalid argument for the hair color: " << ia.what() << '\n';
+            //std::cerr << "Invalid argument for the hair color: " << ia.what() << '\n';
             return 0;
         }
         
@@ -157,7 +156,7 @@ uint8_t validatePassport_Puzzle2(std::string passportLine)
            long long pidDec = std::stoll(pid);
         }
         catch (const std::invalid_argument& ia) {
-            std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
+            //std::cerr << "Invalid argument for the passport id: " << ia.what() << '\n';
             return 0;
         }
     }
@@ -191,9 +190,15 @@ int main(int argc, char *argv[])
     }
     entries.close();
     std::vector<uint8_t> passportCounter;
-    std::transform(passports.begin(),passports.end(), std::back_inserter(passportCounter),validatePassport_Puzzle2);
+    std::transform(passports.begin(),passports.end(), std::back_inserter(passportCounter),validatePassport_Puzzle1);
 
     std::cout << "result puzzle 1: " << std::accumulate(passportCounter.begin(),passportCounter.end(),0) << std::endl;
+
+
+    std::vector<uint8_t> passportCounter_puzzle2;
+    std::transform(passports.begin(),passports.end(), std::back_inserter(passportCounter_puzzle2),validatePassport_Puzzle2);
+
+    std::cout << "result puzzle 2: " << std::accumulate(passportCounter_puzzle2.begin(),passportCounter_puzzle2.end(),0) << std::endl;
 
     return 0;
 }
