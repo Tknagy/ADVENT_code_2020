@@ -7,21 +7,21 @@
 
 bool returnBiggest (int i,int j) { return (i>j); }
 
+char convertSeatToBooleanChar (char seatRowOrColumn)
+{
+    if(seatRowOrColumn == 'B' || seatRowOrColumn == 'R')return '1';
+    if(seatRowOrColumn == 'F' || seatRowOrColumn == 'L')return '0'; 
+
+    std::cerr << "Seat Row or Column is out of specified range B/F/R/L." << std::endl;
+    return '?';
+}
+
 int calculateSeatIds_Puzzle1(std::string seatSpecification)
 {
     int seatId;
-    size_t pos;
-    while ((pos = seatSpecification.find("B")) != std::string::npos) {
-        seatSpecification.replace(pos, 1, "1");
-    }
-    while ((pos = seatSpecification.find("F")) != std::string::npos) {
-        seatSpecification.replace(pos, 1, "0");
-    }
-    while ((pos = seatSpecification.find("R")) != std::string::npos) {
-        seatSpecification.replace(pos, 1, "1");
-    }
-    while ((pos = seatSpecification.find("L")) != std::string::npos) {
-        seatSpecification.replace(pos, 1, "0");
+    for(size_t i=0; i<seatSpecification.size(); i++)
+    {
+        seatSpecification.at(i) = convertSeatToBooleanChar(seatSpecification.at(i));
     }
     
     std::string seatColumn = seatSpecification.substr(7,3);
@@ -34,7 +34,8 @@ int calculateSeatIds_Puzzle1(std::string seatSpecification)
         seatId = seatRowDec * 8 + seatColumnDec;
     }
     catch (const std::invalid_argument& ia) {
-        //std::cerr << "Invalid argument for the seat specification: " << ia.what() << '\n';
+        std::cerr << "Invalid argument for the seat specification: " << ia.what() << '\n';
+        std::cerr << "Seat Row or Column is out of specified range B/F/R/L." << std::endl;
         return 0;
     }
     //std::cout << "row: " <<seatRowDec << ", Column: " <<seatColumnDec <<",Id: " << seatId <<  std::endl;
