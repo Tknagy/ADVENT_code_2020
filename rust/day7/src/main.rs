@@ -45,20 +45,13 @@ fn part1_search(rules: &HashMap<String, Vec<(u32, String)>>, key: &String) -> u3
         return 0;
     } else {
         for value in values {
-            if value.1.contains(&String::from("shiny gold")) {
+            if value.1.contains(&String::from("shiny gold"))
+                || part1_search(&rules, &String::from(&value.1)) > 0
+            {
                 return 1;
             }
         }
-
-        let mut matches = 0;
-        for value in values {
-            matches += part1_search(&rules, &String::from(&value.1));
-        }
-        if matches > 0 {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 0;
     }
 }
 
