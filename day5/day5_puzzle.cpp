@@ -68,5 +68,15 @@ int main(int argc, char *argv[])
 
     std::cout << "result puzzle 1: " << seatIds.at(0) << std::endl;
 
+    for(int i=0; i< seatIds.size()-1; i++)
+    {
+        if(seatIds.at(i+1)+1 != (seatIds.at(i)))
+        {
+            std::cout << "result puzzle 2: " << seatIds.at(i+1)+1 << std::endl;
+            return 0;
+        }
+    }
+    std::cerr << "Result Puzzle 2 not found, Seat Id Vector is continuous" << std::endl;
+
     return 0;
 }
