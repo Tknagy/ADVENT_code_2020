@@ -20,27 +20,15 @@ uint8_t calculateYesAnswers_Puzzle1(std::string groupAnswers)
 
 uint8_t calculateYesAnswers_Puzzle2(std::string groupAnswers)
 {
-    std::set<char> uniqueAnswers;
-    uint8_t commonAnswersSize ;
+    
+    uint8_t commonAnswersSize = 0 ;
     //count number of users in the group using the space delimiter 
     size_t groupSize = std::count(groupAnswers.begin(), groupAnswers.end(), ' ');
 
-    //Then, populate the set with all answers in the group
-    for(auto answerChar : groupAnswers)
-    {   
-        if(answerChar != ' ') uniqueAnswers.insert(answerChar);
-    }
-    //To check common answers;
-    //for this, consider that all unique answers are common answers
-    commonAnswersSize = uniqueAnswers.size();
-    //then, for all given answers
-    for(auto oneAnswer : uniqueAnswers)
-    {   
-        //check which chars does not repeat in all user responses by counting it and comparing with the group size
-        //if the value is different than the group size, it means that this unique char does not appear in one of the user entries and
-        //therefore is not common. Therefore, decrease the commonAnswersSize;
-        if(std::count(groupAnswers.begin(), groupAnswers.end(), oneAnswer) != groupSize)commonAnswersSize--;
-    }
+    //Then, check if the occurence of each letter from a-z in the group answers. 
+    //If equal to group size, add one to commonAnswerSize
+    for (char c = 'a'; c <= 'z'; ++c) if(std::count(groupAnswers.begin(), groupAnswers.end(), c) == groupSize)commonAnswersSize++;
+
     return commonAnswersSize;
 }
 
