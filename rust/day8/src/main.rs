@@ -57,17 +57,16 @@ fn part1(instructions: &Vec<Instruction>) {
 }
 
 fn part2(original_instructions: &Vec<Instruction>) {
-    let jmps_nops_indices =
-        original_instructions
-            .iter()
-            .enumerate()
-            .fold(vec![], |mut acc, (i, inst)| {
-                match inst.itype {
-                    InstructionType::JMP | InstructionType::NOP => acc.push(i),
-                    _ => {}
-                };
-                acc
-            });
+    let jmps_nops_indices: Vec<usize> = original_instructions
+        .iter()
+        .enumerate()
+        .map(|(i, inst)| match inst.itype {
+            InstructionType::JMP | InstructionType::NOP => Some(i),
+            _ => None,
+        })
+        .filter(|i| i.is_some())
+        .flat_map(|i| i)
+        .collect();
 
     for i in jmps_nops_indices {
         let mut instructions: Vec<Instruction> = original_instructions.to_vec();

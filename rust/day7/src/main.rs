@@ -13,46 +13,49 @@ fn get_rules(contents: &String) -> HashMap<String, Vec<(u32, String)>> {
         static ref RE_CONTAINED: Regex = Regex::new(r"([0-9]+)\s([a-z]+\s+[a-z]+)\sbags?").unwrap();
     }
 
-    let mut rules: HashMap<String, Vec<(u32, String)>> = HashMap::new();
+    let rules = contents
+        .lines()
+        .map(|line| {
+            let first = String::from(&RE_FIRST.captures(line).unwrap()[1]);
+            let caps: Vec<_> = RE_CONTAINED.captures_iter(line).collect();
 
-    for line in contents.lines() {
-        let first = String::from(&RE_FIRST.captures(line).unwrap()[1]);
-        let caps: Vec<_> = RE_CONTAINED.captures_iter(line).collect();
-
-        let mut contained: Vec<(u32, String)> = Vec::new();
-        for cap in caps {
-            let quantity = &cap[1].parse::<u32>().unwrap();
-            let bag_type = String::from(&cap[2]);
-            contained.push((quantity.clone(), bag_type));
-        }
-        rules.insert(first, contained);
-    }
+            let contained = caps
+                .iter()
+                .map(|cap| {
+                    let quantity = &cap[1].parse::<u32>().unwrap();
+                    let bag_type = String::from(&cap[2]);
+                    (quantity.clone(), bag_type)
+                })
+                .collect();
+            (first, contained)
+        })
+        .collect();
 
     rules
 }
 
 fn part1(rules: &HashMap<String, Vec<(u32, String)>>) {
-    let mut contains_shiny = 0;
-    for key in rules.keys() {
-        contains_shiny += part1_search(&rules, &String::from(key));
-    }
+    let contains_shiny: u32 = rules
+        .keys()
+        .map(|key| part1_search(&rules, &String::from(key)))
+        .sum();
     println!("{}", contains_shiny);
 }
 
 fn part1_search(rules: &HashMap<String, Vec<(u32, String)>>, key: &String) -> u32 {
     let values = rules.get(key).unwrap();
-    if values.is_empty() {
-        return 0;
-    } else {
-        for value in values {
-            if value.1.contains(&String::from("shiny gold"))
+    if values
+        .iter()
+        .filter(|value| {
+            value.1.contains(&String::from("shiny gold"))
                 || part1_search(&rules, &String::from(&value.1)) > 0
-            {
-                return 1;
-            }
-        }
-        return 0;
+        })
+        .next()
+        .is_some()
+    {
+        return 1;
     }
+    return 0;
 }
 
 fn part2(rules: &HashMap<String, Vec<(u32, String)>>) {
@@ -65,11 +68,10 @@ fn part2_search(rules: &HashMap<String, Vec<(u32, String)>>, key: &String) -> u3
     if values.is_empty() {
         return 0;
     } else {
-        let mut matches = 0;
-        for value in values {
-            matches += value.0 + value.0 * part2_search(&rules, &String::from(&value.1));
-        }
-        matches
+        values
+            .iter()
+            .map(|value| value.0 + value.0 * part2_search(&rules, &String::from(&value.1)))
+            .sum()
     }
 }
 
