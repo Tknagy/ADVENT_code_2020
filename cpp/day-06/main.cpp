@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <sstream>
 #include <iostream>
 #include <numeric>
+#include <sstream>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -14,9 +14,7 @@ std::string unsorted_intersection(std::string first, std::string second)
     std::sort(second.begin(), second.end());
 
     std::string res;
-    std::set_intersection(first.begin(), first.end(),
-                        second.begin(), second.end(),
-                        std::back_inserter(res));
+    std::set_intersection(first.begin(), first.end(), second.begin(), second.end(), std::back_inserter(res));
     return res;
 }
 
