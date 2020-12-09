@@ -20,24 +20,26 @@ fn part1(numbers: &Vec<i64>, preamble_size: usize) -> Result<i64, Box<dyn Error>
     Err(Box::from("no solution for part 1"))
 }
 
-/// The dumbest brute force solution.
 fn part2(numbers: &Vec<i64>, target: &i64) {
-    for i in 0..numbers.len() - 1 {
-        for j in i + 1..numbers.len() {
-            let slice = &numbers[i..j];
-            let slice_sum: i64 = slice.iter().sum();
+    let mut left_idx = 0;
+    let mut right_idx = 0;
+    let mut sum = numbers[left_idx];
 
-            if slice_sum == *target {
-                println!(
-                    "{}",
-                    slice.iter().min().unwrap() + slice.iter().max().unwrap()
-                );
-                return;
-            } else if slice_sum > *target {
-                continue;
-            }
+    while sum < *target {
+        right_idx += 1;
+        sum += numbers[right_idx];
+
+        while sum > *target {
+            sum -= numbers[left_idx];
+            left_idx += 1
         }
     }
+
+    println!(
+        "{}",
+        numbers[left_idx..right_idx + 1].iter().min().unwrap()
+            + numbers[left_idx..right_idx + 1].iter().max().unwrap()
+    );
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
