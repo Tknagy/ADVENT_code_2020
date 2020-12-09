@@ -5,17 +5,7 @@
 #include <string>
 #include <vector>
 
-static std::vector<std::string> read_stdin()
-{
-    std::vector<std::string> input = {""};
-    for (std::string line; std::getline(std::cin, line);) {
-        if (!line.empty())
-            input.back().append(" ").append(line);
-        else
-            input.push_back("");
-    }
-    return input;
-}
+#include "utils.h"
 
 bool part_one(const std::string &line)
 {
@@ -139,7 +129,7 @@ bool part_two(const std::string &line)
 
 int main(int argc, char const *argv[])
 {
-    std::vector<std::string> input = read_stdin();
+    std::vector<std::string> input = read_stdin_ungrouped();
     std::vector<bool> first, second;
     std::transform(input.begin(), input.end(), std::back_inserter(first), part_one);
     std::transform(input.begin(), input.end(), std::back_inserter(second), part_two);

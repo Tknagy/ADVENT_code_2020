@@ -3,13 +3,7 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> read_stdin()
-{
-    std::vector<std::string> input;
-    for (std::string line; std::getline(std::cin, line);)
-        input.push_back(line);
-    return input;
-}
+#include "utils.h"
 
 unsigned int seat_id(const std::string &line)
 {

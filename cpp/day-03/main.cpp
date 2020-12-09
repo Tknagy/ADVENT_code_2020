@@ -2,14 +2,7 @@
 #include <string>
 #include <vector>
 
-static std::vector<std::string> read_stdin()
-{
-    std::vector<std::string> input;
-    std::string line;
-    while (std::getline(std::cin, line))
-        input.push_back(line);
-    return input;
-}
+#include "utils.h"
 
 unsigned long int part_one(const std::vector<std::string> &map, int slope_x = 3, int slope_y = 1)
 {

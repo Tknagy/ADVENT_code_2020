@@ -5,7 +5,7 @@ PROBLEM=${DIR}/day-04
 EXECUTABLE=${DIR}/a.out
 
 # Compile
-g++ -std=c++17 ${DIR}/main.cpp -o $EXECUTABLE
+g++ -std=c++17 -I${DIR}/../../utils ${DIR}/main.cpp ${DIR}/../../utils/utils.cpp -o $EXECUTABLE
 
 # Example
 TEST_CASES+=(`cat ${DIR}/input-test.txt | $EXECUTABLE`)

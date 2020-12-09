@@ -7,14 +7,7 @@
 #include <tuple>
 #include <vector>
 
-static std::vector<std::string> read_stdin()
-{
-    std::vector<std::string> input;
-    std::string line;
-    while (std::getline(std::cin, line))
-        input.push_back(line);
-    return input;
-}
+#include "utils.h"
 
 std::tuple<std::uint32_t, std::uint32_t, char, std::string> parse_information(const std::string &line)
 {

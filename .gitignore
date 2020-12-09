@@ -1,3 +1,7 @@
+# CMake build
+/build
+
+# Visual Studio Code
 /.vscode
 
 ## Ignore Visual Studio temporary files, build results, and
