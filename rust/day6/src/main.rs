@@ -4,10 +4,12 @@ use std::fs;
 fn part1(group_answers: &Vec<&str>) {
     let all_answers: usize = group_answers
         .iter()
-        .map(|answer| {
-            let answer: String = answer.split_whitespace().collect();
-            let n_unique_answers = answer.chars().collect::<HashSet<char>>().len();
-            n_unique_answers
+        .map(|group_answer| {
+            group_answer
+                .chars()
+                .filter(|c| !c.is_whitespace())
+                .collect::<HashSet<char>>()
+                .len()
         })
         .sum();
 

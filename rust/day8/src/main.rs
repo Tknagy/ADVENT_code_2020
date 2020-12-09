@@ -60,12 +60,10 @@ fn part2(original_instructions: &Vec<Instruction>) {
     let jmps_nops_indices: Vec<usize> = original_instructions
         .iter()
         .enumerate()
-        .map(|(i, inst)| match inst.itype {
+        .filter_map(|(i, inst)| match inst.itype {
             InstructionType::JMP | InstructionType::NOP => Some(i),
             _ => None,
         })
-        .filter(|i| i.is_some())
-        .flat_map(|i| i)
         .collect();
 
     for i in jmps_nops_indices {
