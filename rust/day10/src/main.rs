@@ -1,4 +1,3 @@
-use std::cmp::min;
 use std::collections::HashMap;
 use std::error::Error;
 use std::fs;
@@ -38,8 +37,7 @@ fn part2(adapters: &Vec<i32>) {
     let mut fw_edges: HashMap<i32, Vec<i32>> = HashMap::new();
     for idx in 0..all_outputs.len() - 1 {
         let output = all_outputs[idx];
-        let rest = all_outputs.len() - 1 - idx;
-        let next: Vec<i32> = all_outputs[idx + 1..=idx + min(3, rest)]
+        let next: Vec<i32> = all_outputs[idx + 1..]
             .iter()
             .filter(|&&d| (d - output) <= 3)
             .map(|d| *d) // why god
@@ -49,17 +47,15 @@ fn part2(adapters: &Vec<i32>) {
     }
 
     let mut cache: HashMap<i32, i128> = HashMap::new();
-
-    for i in all_outputs.iter().rev() {
-        if !cache.contains_key(i) {
-            let mut combinations = 0;
-            part2_search(&fw_edges, &cache, *i, device_rating, &mut combinations);
-            cache.insert(*i, combinations);
-        }
-    }
+    let all_combinations = all_outputs.iter().rev().map(|i| {
+        let mut combinations = 0;
+        part2_search(&fw_edges, &cache, *i, device_rating, &mut combinations);
+        cache.insert(*i, combinations);
+        combinations
+    });
 
     // root contains all accumulated combinations
-    println!("{:?}", cache.get(&0).unwrap());
+    println!("{:?}", all_combinations.last().unwrap());
 }
 
 fn part2_search(
