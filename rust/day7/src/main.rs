@@ -35,27 +35,27 @@ fn get_rules(contents: &String) -> HashMap<String, Vec<(u32, String)>> {
 }
 
 fn part1(rules: &HashMap<String, Vec<(u32, String)>>) {
-    let contains_shiny: u32 = rules
+    let contains_shiny = rules
         .keys()
-        .map(|key| part1_search(&rules, &String::from(key)))
-        .sum();
+        .filter_map(|key| part1_search(&rules, &String::from(key)))
+        .count();
     println!("{}", contains_shiny);
 }
 
-fn part1_search(rules: &HashMap<String, Vec<(u32, String)>>, key: &String) -> u32 {
+fn part1_search(rules: &HashMap<String, Vec<(u32, String)>>, key: &String) -> Option<()> {
     let values = rules.get(key).unwrap();
     if values
         .iter()
         .filter(|value| {
             value.1.contains(&String::from("shiny gold"))
-                || part1_search(&rules, &String::from(&value.1)) > 0
+                || part1_search(&rules, &String::from(&value.1)).is_some()
         })
         .next()
         .is_some()
     {
-        return 1;
+        return Some(());
     }
-    return 0;
+    None
 }
 
 fn part2(rules: &HashMap<String, Vec<(u32, String)>>) {
