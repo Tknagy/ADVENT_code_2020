@@ -1,5 +1,5 @@
 use std::cmp::min;
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 use std::error::Error;
 use std::fs;
 
@@ -35,9 +35,7 @@ fn part2(adapters: &Vec<i32>) {
     // Add the target device
     all_outputs.push(device_rating);
 
-    let mut bw_edges: HashMap<i32, Vec<i32>> = HashMap::new();
     let mut fw_edges: HashMap<i32, Vec<i32>> = HashMap::new();
-
     for idx in 0..all_outputs.len() - 1 {
         let output = all_outputs[idx];
         let rest = all_outputs.len() - 1 - idx;
@@ -47,38 +45,16 @@ fn part2(adapters: &Vec<i32>) {
             .map(|d| *d) // why god
             .collect();
 
-        for n in &next {
-            match bw_edges.get_mut(n) {
-                Some(vec) => vec.push(output),
-                None => {
-                    bw_edges.insert(*n, vec![output]);
-                }
-            }
-        }
-
         fw_edges.insert(output, next);
     }
 
     let mut cache: HashMap<i32, i128> = HashMap::new();
-    let mut to_visit: VecDeque<i32> = VecDeque::new();
 
-    to_visit.push_back(device_rating);
-
-    while !to_visit.is_empty() {
-        let value = to_visit.pop_front().unwrap();
-
-        match bw_edges.get(&value) {
-            Some(edges) => {
-                for v in edges {
-                    if !cache.contains_key(v) {
-                        let mut combinations = 0;
-                        part2_search(&fw_edges, &cache, *v, device_rating, &mut combinations);
-                        cache.insert(*v, combinations);
-                        to_visit.push_back(*v);
-                    }
-                }
-            }
-            _ => {}
+    for i in all_outputs.iter().rev() {
+        if !cache.contains_key(i) {
+            let mut combinations = 0;
+            part2_search(&fw_edges, &cache, *i, device_rating, &mut combinations);
+            cache.insert(*i, combinations);
         }
     }
 
