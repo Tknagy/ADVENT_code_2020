@@ -99,9 +99,9 @@ unsigned int run_simulation(const std::vector<std::string> &map, RulesCallback a
         curr = simulate_round(prev, apply_rules);
     }
 
-    return std::reduce(curr.begin(), curr.end(), 0, [](const auto &accumulator, const auto &line) {
-        return accumulator + std::count_if(line.begin(), line.end(), seat_occupied);
-    });
+    std::vector<ull> occupied_seats;
+    std::transform(curr.begin(), curr.end(), std::back_inserter(occupied_seats), [](const std::string &line){ return std::count_if(line.begin(), line.end(), seat_occupied); });
+    return std::reduce(occupied_seats.begin(), occupied_seats.end(), 0);
 }
 
 unsigned int part_one(const std::vector<std::string> &map) { return run_simulation(map, apply_first_rules); }
