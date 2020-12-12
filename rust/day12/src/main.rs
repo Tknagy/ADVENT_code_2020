@@ -55,8 +55,7 @@ fn part1(commands: &Vec<Command>) {
     for command in commands {
         match command.action {
             Action::F => {
-                pos.0 += dir.0 * command.arg;
-                pos.1 += dir.1 * command.arg;
+                pos = (pos.0 + dir.0 * command.arg, pos.1 + dir.1 * command.arg);
             }
             Action::N => {
                 pos.1 += command.arg;
@@ -87,13 +86,14 @@ fn part2(commands: &Vec<Command>) {
     let mut pos_waypoint = (10, 1);
 
     for command in commands {
+        let relative = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
         match command.action {
             Action::F => {
-                let relative = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
-                pos_ship.0 += (pos_waypoint.0 - pos_ship.0) * command.arg;
-                pos_ship.1 += (pos_waypoint.1 - pos_ship.1) * command.arg;
-                pos_waypoint.0 = relative.0 + pos_ship.0;
-                pos_waypoint.1 = relative.1 + pos_ship.1;
+                pos_ship = (
+                    pos_ship.0 + relative.0 * command.arg,
+                    pos_ship.1 + relative.1 * command.arg,
+                );
+                pos_waypoint = (relative.0 + pos_ship.0, relative.1 + pos_ship.1);
             }
             Action::N => {
                 pos_waypoint.1 += command.arg;
@@ -108,16 +108,12 @@ fn part2(commands: &Vec<Command>) {
                 pos_waypoint.0 -= command.arg;
             }
             Action::L => {
-                let dir = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
-                let dir = rotate(&dir, &command.arg);
-                pos_waypoint.0 = pos_ship.0 + dir.0;
-                pos_waypoint.1 = pos_ship.1 + dir.1;
+                let relative = rotate(&relative, &command.arg);
+                pos_waypoint = (relative.0 + pos_ship.0, relative.1 + pos_ship.1);
             }
             Action::R => {
-                let dir = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
-                let dir = rotate(&dir, &-command.arg);
-                pos_waypoint.0 = pos_ship.0 + dir.0;
-                pos_waypoint.1 = pos_ship.1 + dir.1;
+                let relative = rotate(&relative, &-command.arg);
+                pos_waypoint = (relative.0 + pos_ship.0, relative.1 + pos_ship.1);
             }
         }
     }
