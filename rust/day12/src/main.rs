@@ -1,7 +1,6 @@
 use std::error::Error;
 use std::fs;
 
-#[derive(Debug)]
 enum Action {
     N,
     S,
@@ -12,7 +11,6 @@ enum Action {
     F,
 }
 
-#[derive(Debug)]
 struct Command {
     action: Action,
     arg: i64,
@@ -39,6 +37,17 @@ impl Command {
     }
 }
 
+fn rotate(dir: &(i64, i64), degrees: &i64) -> (i64, i64) {
+    let orig_dir = dir;
+
+    (
+        ((*degrees as f32).to_radians().cos() * orig_dir.0 as f32).round() as i64
+            - ((*degrees as f32).to_radians().sin() * orig_dir.1 as f32).round() as i64,
+        ((*degrees as f32).to_radians().sin() * orig_dir.0 as f32).round() as i64
+            + ((*degrees as f32).to_radians().cos() * orig_dir.1 as f32).round() as i64,
+    )
+}
+
 fn part1(commands: &Vec<Command>) {
     let mut pos = (0, 0);
     let mut dir = (1, 0);
@@ -62,22 +71,10 @@ fn part1(commands: &Vec<Command>) {
                 pos.0 -= command.arg;
             }
             Action::L => {
-                let orig_dir = dir;
-                dir.0 = ((command.arg as f32).to_radians().cos() * orig_dir.0 as f32).round()
-                    as i64
-                    - ((command.arg as f32).to_radians().sin() * orig_dir.1 as f32).round() as i64;
-                dir.1 = ((command.arg as f32).to_radians().sin() * orig_dir.0 as f32).round()
-                    as i64
-                    + ((command.arg as f32).to_radians().cos() * orig_dir.1 as f32).round() as i64;
+                dir = rotate(&dir, &command.arg);
             }
             Action::R => {
-                let orig_dir = dir;
-                dir.0 = ((-command.arg as f32).to_radians().cos() * orig_dir.0 as f32).round()
-                    as i64
-                    - ((-command.arg as f32).to_radians().sin() * orig_dir.1 as f32).round() as i64;
-                dir.1 = ((-command.arg as f32).to_radians().sin() * orig_dir.0 as f32).round()
-                    as i64
-                    + ((-command.arg as f32).to_radians().cos() * orig_dir.1 as f32).round() as i64;
+                dir = rotate(&dir, &-command.arg);
             }
         }
     }
@@ -111,26 +108,16 @@ fn part2(commands: &Vec<Command>) {
                 pos_waypoint.0 -= command.arg;
             }
             Action::L => {
-                let orig_dir = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
-                let dir_x = ((command.arg as f32).to_radians().cos() * orig_dir.0 as f32).round()
-                    as i64
-                    - ((command.arg as f32).to_radians().sin() * orig_dir.1 as f32).round() as i64;
-                let dir_y = ((command.arg as f32).to_radians().sin() * orig_dir.0 as f32).round()
-                    as i64
-                    + ((command.arg as f32).to_radians().cos() * orig_dir.1 as f32).round() as i64;
-                pos_waypoint.0 = pos_ship.0 + dir_x;
-                pos_waypoint.1 = pos_ship.1 + dir_y;
+                let dir = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
+                let dir = rotate(&dir, &command.arg);
+                pos_waypoint.0 = pos_ship.0 + dir.0;
+                pos_waypoint.1 = pos_ship.1 + dir.1;
             }
             Action::R => {
-                let orig_dir = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
-                let dir_x = ((-command.arg as f32).to_radians().cos() * orig_dir.0 as f32).round()
-                    as i64
-                    - ((-command.arg as f32).to_radians().sin() * orig_dir.1 as f32).round() as i64;
-                let dir_y = ((-command.arg as f32).to_radians().sin() * orig_dir.0 as f32).round()
-                    as i64
-                    + ((-command.arg as f32).to_radians().cos() * orig_dir.1 as f32).round() as i64;
-                pos_waypoint.0 = pos_ship.0 + dir_x;
-                pos_waypoint.1 = pos_ship.1 + dir_y;
+                let dir = (pos_waypoint.0 - pos_ship.0, pos_waypoint.1 - pos_ship.1);
+                let dir = rotate(&dir, &-command.arg);
+                pos_waypoint.0 = pos_ship.0 + dir.0;
+                pos_waypoint.1 = pos_ship.1 + dir.1;
             }
         }
     }
