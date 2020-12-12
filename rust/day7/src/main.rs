@@ -78,6 +78,7 @@ fn part2_search(rules: &HashMap<String, Vec<(u32, String)>>, key: &String) -> u3
 fn main() {
     let contents = fs::read_to_string("input.txt").unwrap();
     let rules = get_rules(&contents);
+    println!("{:?}", rules);
     part1(&rules);
     part2(&rules);
 }

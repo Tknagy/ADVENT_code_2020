@@ -2,9 +2,10 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::fs;
 
+const DELTA: i32 = 3;
+
 fn part1(adapters: &Vec<i32>) {
-    let device_rating = adapters.iter().max().unwrap() + 3;
-    let mut differences: Vec<i32> = Vec::new();
+    let device_rating = adapters.iter().max().unwrap() + DELTA;
     let mut all_outputs = adapters.to_vec();
 
     // Add the power outlet
@@ -12,10 +13,9 @@ fn part1(adapters: &Vec<i32>) {
     //Add the target device
     all_outputs.push(device_rating);
 
+    let mut differences: Vec<i32> = Vec::new();
     for current_idx in 0..all_outputs.len() - 1 {
-        let current_output = all_outputs[current_idx];
-        let next_output = all_outputs[current_idx + 1];
-        differences.push(next_output - current_output);
+        differences.push(all_outputs[current_idx + 1] - all_outputs[current_idx]);
     }
 
     println!(
@@ -26,7 +26,7 @@ fn part1(adapters: &Vec<i32>) {
 }
 
 fn part2(adapters: &Vec<i32>) {
-    let device_rating = adapters.iter().max().unwrap() + 3;
+    let device_rating = adapters.iter().max().unwrap() + DELTA;
     let mut all_outputs: Vec<i32> = adapters.to_vec();
 
     // Add the power outlet
@@ -39,10 +39,9 @@ fn part2(adapters: &Vec<i32>) {
         let output = all_outputs[idx];
         let next: Vec<i32> = all_outputs[idx + 1..]
             .iter()
-            .filter(|&&d| (d - output) <= 3)
+            .filter(|&&d| (d - output) <= DELTA)
             .map(|d| *d) // why god
             .collect();
-
         fw_edges.insert(output, next);
     }
 
@@ -83,7 +82,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string("input.txt")?;
     let mut adapters: Vec<i32> = contents
         .lines()
-        .map(|line| line.parse::<i32>().unwrap())
+        .flat_map(|line| line.parse::<i32>())
         .collect();
     adapters.sort();
     part1(&adapters);
